@@ -1,6 +1,7 @@
 namespace ScruffyNerfHerderSabers.Migrations
 {
     using ScruffyNerfHerderSabers.Models;
+    using ScruffyNerfHerderSabers.DAL;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -14,7 +15,7 @@ namespace ScruffyNerfHerderSabers.Migrations
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(ScruffyNerfHerderSabers.DAL.StoreContext context)
+        protected override void Seed(StoreContext context)
         {
             var customers = new List<Customer>
             {
@@ -29,19 +30,73 @@ namespace ScruffyNerfHerderSabers.Migrations
             customers.ForEach(c => context.Customers.AddOrUpdate(p => p.LastName, c));
             context.SaveChanges();
 
+            var employees = new List<Employee>
+            {
+                new Employee {FirstMidName = "Jim", LastName = "Jameson", HireDate = DateTime.Parse("1999-03-12")},
+                new Employee {FirstMidName = "Rob", LastName = "Robinson", HireDate = DateTime.Parse("1994-04-15")},
+                new Employee {FirstMidName = "Dave", LastName = "Davidson", HireDate = DateTime.Parse("1989-01-20")},
+                new Employee {FirstMidName = "Will", LastName = "Williamson", HireDate = DateTime.Parse("2001-07-22")},
+                new Employee {FirstMidName = "Bruce", LastName = "Holloway", HireDate = DateTime.Parse("1993-12-19")},
+            };
+            employees.ForEach(c => context.Employees.AddOrUpdate(p => p.LastName, c));
+            context.SaveChanges();
+
+            var departments = new List<Department>
+            {
+                new Department {Name = "Dark", Budget = 800000, StartDate = DateTime.Parse("1999-12-11"), EmployeeID = employees.Single( i => i.LastName == "Jameson").ID},
+                new Department {Name = "Dark", Budget = 800000, StartDate = DateTime.Parse("1994-12-11"), EmployeeID = employees.Single( i => i.LastName == "Robinson").ID},
+                new Department {Name = "Light", Budget = 1800000, StartDate = DateTime.Parse("2002-01-12"), EmployeeID = employees.Single( i => i.LastName == "Williamson").ID}
+            };
+            departments.ForEach(c => context.Departments.AddOrUpdate(p => p.Name, c));
+            context.SaveChanges();
+
             var products = new List<Product>
             {
-                new Product{ProductID= 1, ProductName="Defender",UPC= 123, Price=10499, Inventory=3, Color="Blue", Hilt="Curved", Hand="Main"},
-                new Product{ProductID=2, ProductName="Overshadow",UPC=124, Price=10499, Inventory=7, Color="Black", Hilt="Dual", Hand="Both"},
-                new Product{ProductID=3, ProductName="Savior", UPC=125, Price=10499, Inventory=2, Color="Green", Hilt="Standard", Hand="Off"},
-                new Product{ProductID=4, ProductName="Conqueror",UPC=126, Price=10499, Inventory=1, Color="Blood Red", Hilt="Standard", Hand="Main"},
-                new Product{ProductID=5, ProductName="Deliverer",UPC=127, Price=10499, Inventory=4,  Color="Purple", Hilt="Dual Spinning", Hand="Both"},
-                new Product{ProductID=6, ProductName="Promise of Ended Dreams",UPC=128, Price=10499, Inventory=1, Color="Red", Hilt="Crossguard", Hand="Main"},
-                new Product{ProductID=7, ProductName="Shortsword of Pride's Fall",UPC=129, Price=10499, Inventory=1, Color="Orange", Hilt="Curved", Hand="Off"}
+                new Product{ProductID= 1, ProductName="Defender",UPC= 123, Price=10499, Inventory=3, Color="Blue", Hilt="Curved", Hand="Main", DepartmentID = departments.Single (c => c.Name == "Light").DepartmentID, Employees = new List<Employee>()},
+                new Product{ProductID=2, ProductName="Overshadow",UPC=124, Price=10499, Inventory=7, Color="Black", Hilt="Dual", Hand="Both", DepartmentID = departments.Single (c => c.Name == "Dark").DepartmentID, Employees = new List<Employee>()},
+                new Product{ProductID=3, ProductName="Savior", UPC=125, Price=10499, Inventory=2, Color="Green", Hilt="Standard", Hand="Off", DepartmentID = departments.Single (c => c.Name == "Light").DepartmentID, Employees = new List<Employee>()},
+                new Product{ProductID=4, ProductName="Conqueror",UPC=126, Price=10499, Inventory=1, Color="Blood Red", Hilt="Standard", Hand="Main", DepartmentID = departments.Single (c => c.Name == "Dark").DepartmentID, Employees = new List<Employee>()},
+                new Product{ProductID=5, ProductName="Deliverer",UPC=127, Price=10499, Inventory=4,  Color="Purple", Hilt="Dual Spinning", Hand="Both", DepartmentID = departments.Single (c => c.Name == "Light").DepartmentID, Employees = new List<Employee>()},
+                new Product{ProductID=6, ProductName="Promise of Ended Dreams",UPC=128, Price=10499, Inventory=1, Color="Red", Hilt="Crossguard", Hand="Main", DepartmentID = departments.Single (c => c.Name == "Dark").DepartmentID, Employees = new List<Employee>()},
+                new Product{ProductID=7, ProductName="Shortsword of Pride's Fall",UPC=129, Price=10499, Inventory=1, Color="Orange", Hilt="Curved", Hand="Off", DepartmentID = departments.Single (c => c.Name == "Light").DepartmentID, Employees = new List<Employee>()}
 
             };
 
             products.ForEach(c => context.Products.AddOrUpdate(p => p.ProductName, c));
+            context.SaveChanges();
+
+            var departmentAssignments = new List<DepartmentAssignment>
+            {
+                new DepartmentAssignment
+                {
+                    EmployeeID = employees.Single( e => e.LastName == "Jameson").ID, Location = "Hoth"
+                },
+                new DepartmentAssignment
+                {
+                    EmployeeID = employees.Single( e => e.LastName == "Robinson").ID, Location = "Bespin"
+                },
+                new DepartmentAssignment
+                {
+                    EmployeeID = employees.Single( e => e.LastName == "Davidson").ID, Location = "Mustafar"
+                },
+                new DepartmentAssignment
+                {
+                    EmployeeID = employees.Single( e => e.LastName == "Williamson").ID, Location = "Kamino"
+                },
+                new DepartmentAssignment
+                {
+                    EmployeeID = employees.Single( e => e.LastName == "Holloway").ID, Location = "Kashyyyk"
+                }
+            };
+            departmentAssignments.ForEach(c => context.DepartmentAssignments.AddOrUpdate(p => p.EmployeeID, c));
+            context.SaveChanges();
+
+            AddOrUpdateEmployee(context, "Dark", "Jameson");
+            AddOrUpdateEmployee(context, "Light", "Robinson");
+            AddOrUpdateEmployee(context, "Dark", "Davidson");
+            AddOrUpdateEmployee(context, "Light", "Williamson");
+            AddOrUpdateEmployee(context, "Light", "Holloway");
+
             context.SaveChanges();
 
             var transactions = new List<Transaction>
@@ -101,6 +156,14 @@ namespace ScruffyNerfHerderSabers.Migrations
                 }
             }
             context.SaveChanges();
+        }
+
+        void AddOrUpdateEmployee(StoreContext context, string productName, string employeeName)
+        {
+            var crs = context.Products.SingleOrDefault(c => c.ProductName == productName);
+            var inst = crs.Employees.SingleOrDefault(i => i.LastName == employeeName);
+            if (inst == null)
+                crs.Employees.Add(context.Employees.Single(i => i.LastName == employeeName));
         }
     }
 }
