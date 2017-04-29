@@ -30,7 +30,7 @@ namespace ScruffyNerfHerderSabers.Models
         [Display(Name = "Full Name")]
         public string FullName
         {
-            get { return LastName + "," + FirstMidName}
+            get { return LastName + "," + FirstMidName; }
         }
 
         public virtual ICollection<Product> Products { get; set; }

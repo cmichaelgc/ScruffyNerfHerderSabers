@@ -44,7 +44,6 @@ namespace ScruffyNerfHerderSabers.Migrations
             var departments = new List<Department>
             {
                 new Department {Name = "Dark", Budget = 800000, StartDate = DateTime.Parse("1999-12-11"), EmployeeID = employees.Single( i => i.LastName == "Jameson").ID},
-                new Department {Name = "Dark", Budget = 800000, StartDate = DateTime.Parse("1994-12-11"), EmployeeID = employees.Single( i => i.LastName == "Robinson").ID},
                 new Department {Name = "Light", Budget = 1800000, StartDate = DateTime.Parse("2002-01-12"), EmployeeID = employees.Single( i => i.LastName == "Williamson").ID}
             };
             departments.ForEach(c => context.Departments.AddOrUpdate(p => p.Name, c));
