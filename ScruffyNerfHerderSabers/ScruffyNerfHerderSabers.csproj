@@ -195,13 +195,23 @@
     <Compile Include="ViewModels\TransactionDateGroup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\clean-blog.css" />
+    <Content Include="Content\css\clean-blog.min.css" />
+    <Content Include="Content\img\dual.png" />
+    <Content Include="Content\img\duel.jpg" />
+    <Content Include="Content\img\hddual.jpg" />
+    <Content Include="Content\img\hilt.jpg" />
+    <Content Include="Content\img\kyber.jpg" />
+    <Content Include="Content\img\lightsaber.jpg" />
+    <Content Include="Content\css\PagedList.css" />
+    <Content Include="Content\img\lightsaber2.png" />
+    <Content Include="Content\img\multisaber.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
+    <Content Include="Content\css\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
